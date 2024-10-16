@@ -1,1 +1,1 @@
-# BMI706_FinalProject
+# Health Visualization Dashboard

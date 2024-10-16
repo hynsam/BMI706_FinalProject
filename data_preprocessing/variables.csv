@@ -32,7 +32,7 @@ DR1TCALC,Calcium Intake (mg),Lifestyle Factors,Continuous,"Calcium intake report
 ALQ110,Ever Had at Least 12 Alcoholic Drinks in One Year,Lifestyle Factors,Categorical,"Yes, No"
 RIAGENDR,Gender of the Participant,Demographics,Categorical,"Male, Female"
 RIDAGEYR,Age of the Participant (years),Demographics,Continuous,"Age in years"
-RIDRETH1,Race/Ethnicity,Demographics,Categorical,"Mexican American, Other Hispanic, Non-Hispanic White, Non-Hispanic Black, Other Race - Including Multi-Racial"
+RIDRETH3,Race/Ethnicity,Demographics,Categorical,"Mexican American, Other Hispanic, Non-Hispanic White, Non-Hispanic Black, Non-Hispanic Asian, Other Race - Including Multi-Racial"
 DMDEDUC2,Education Level (Adults 20+),Demographics,Categorical,"Less than 9th grade, 9–11th grade, High school/GED, Some college/AA degree, College graduate or above"
 INDFMPIR,Family Poverty Income Ratio,Demographics,Continuous,"Ratio of family income to poverty threshold"
 DMDMARTL,Marital Status,Demographics,Categorical,"Married, Widowed, Divorced, Separated, Never married, Living with partner"

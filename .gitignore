@@ -1,2 +1,5 @@
 # ignore all file contains deprecated
 *deprecated*
+
+# ignore deprecated folder
+deprecated/

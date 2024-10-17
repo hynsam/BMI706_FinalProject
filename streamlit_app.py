@@ -176,14 +176,14 @@ selector = alt.selection_point(on='click')
 base = alt.Chart(correlation_matrix.reset_index().melt(id_vars='index')).add_params(
     selector
 )
-
+max_corr = correlation_matrix.max().max()
 correlation_matrix_heatmap = base.mark_rect().encode(
     x=alt.X('variable:O', title='Lifestyle Factor'),
     y=alt.Y('index:O', title='Health Outcome'),
     # color=alt.Color('value:Q', title='Correlation')
     color=alt.condition(
         selector,
-        alt.Color('value:Q', title='Correlation'),
+        alt.Color('value:Q', title='Correlation', scale=alt.Scale(scheme='redblue', domain=[-max_corr, max_corr])),
         alt.value('lightgray')
     )
 ).properties(

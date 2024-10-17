@@ -317,7 +317,7 @@ else:
     health_outcome_hist = alt.Chart(df_pca).mark_bar().encode(
         x=alt.X('Health Outcome:Q', bin=alt.Bin(maxbins=30), title=f'{health_outcome_of_interest}'),
         y='count()',
-        color=alt.value('steelblue')
+        # color=alt.value('steelblue')
     ).transform_filter(
         brush
     ).properties(

@@ -21,9 +21,10 @@ df['High Cholesterol'] = ((df['Total Cholesterol (mg/dL)'] >= 240) | (df['Calcul
                           (df['Triglycerides (mg/dL)'] >= 200) | (df['Now Taking Hypertension Medication'] == 'Yes')).astype(int)
 
 # Title of the Plot
-st.write("## NHANES")
+st.write("# Health Visualization Dashboard")
 
 ### Task 1 ###
+st.write("## What is the Distribution of Disease across Demographics Groups?")
 
 # Disease selector
 diseases_list = [
@@ -144,7 +145,7 @@ df_num = df.copy()
 for col in df_num.select_dtypes(include=['object']).columns:
     df_num[col] = df_num[col].astype('category').cat.codes
 
-st.write("## Correlation between lifestyle-related features and health outcomes")
+st.write("## What is the Correlation between each Lifestyle Factors and Health Outcome?")
 
 lifestyle_factors = ['Sleep Duration (hours)', 'Frequency of Muscle-Strengthening Activities per Week', 'Ever Had at Least 12 Alcoholic Drinks in One Year', 'Current Smoking Frequency', 'Time Spent Watching TV or Videos (minutes/day)', 'Calcium Intake (mg)', 'Alcohol Intake (grams)', 'Sugar Intake (grams)', 'Total Fat Intake (grams)', 'Engaged in Vigorous Activity in Past 30 Days', 'Frequency of Vigorous Physical Activity per Week', 'Smoked at Least 100 Cigarettes in Life']
 health_outcomes = ['White Blood Cell Count (10^3 cells/uL)', 'Body Mass Index (BMI)', 'Now Taking Hypertension Medication', 'Ever Told Had Chlamydia', 'Lymphocyte Percentage (%)', 'Hemoglobin (g/dL)', 'Hematocrit (%)', 'Dentition Examination Status', 'Ever Told Had High Blood Pressure', 'Blood Mercury (µg/L)', 'Urine Creatinine (mg/dL)', 'Number of Prescription Medications Taken', 'Urinary Albumin (mg/L)', 'Diastolic Blood Pressure (mmHg)', 'Serum Creatinine (mg/dL)', 'Ever Told Had Genital Herpes', 'Albumin-Creatinine Ratio (mg/g)', 'Blood Lead (µg/dL)', 'Systolic Blood Pressure (mmHg)', 'Calculated LDL Cholesterol (mg/dL)', 'Weight (kg)', 'Triglycerides (mg/dL)', 'Mean Corpuscular Volume (fL)', 'Platelet Count (10^3 cells/uL)', 'Total Energy Intake (kcal)', 'Red Cell Distribution Width (%)', 'Red Blood Cell Count (million cells/uL)', 'Use Any Prescription Medications', 'Total Cholesterol (mg/dL)', 'Doctor Told You Have Diabetes', 'Time Since Last Dental Visit', 'Waist Circumference (cm)', 'Glycohemoglobin (A1C) %', 'Blood Selenium (µg/L)']
@@ -165,7 +166,6 @@ lifestyle_factor_fig2 = st.multiselect(
 
 
 # plot the correlation matrix as a heatmap
-st.write("### Correlation Matrix")
 # calculate the correlation matrix between the df_num[lifestyle_factor_fig2] and df_num[health_outcomes_fig2]
 correlation_matrix = df_num[lifestyle_factor_fig2 + health_outcomes_fig2].corr()
 # x-axis only show lifestyle factors, y-axis only show health outcomes
@@ -198,7 +198,7 @@ correlation_matrix_heatmap
 
 
 ### task 3
-st.write("## Principal Component Analysis")
+st.write("## Does Individual with Similar Lifestyle Factors have Similar Health Outcomes?")
 
 lifestyle_factors_of_interest = st.multiselect(
     "Select Lifestyle Factors",

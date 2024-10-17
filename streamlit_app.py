@@ -5,8 +5,6 @@ import streamlit as st
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
-from sklearn.manifold import TSNE
-
 
 @st.cache
 def load_data():

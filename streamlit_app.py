@@ -69,9 +69,119 @@ correlation_matrix_heatmap = base.mark_rect().encode(
 
 # make a scatter plot of the selected data, 
 
-chart = alt.vconcat(
-    correlation_matrix_heatmap,
-    selected_data
+correlation_matrix_heatmap
+
+
+### task 3
+st.write("## Principal Component Analysis")
+
+lifestyle_factors_of_interest = st.multiselect(
+    "Select Lifestyle Factors",
+    options=lifestyle_factors,
+    default=['Sleep Duration (hours)', 'Frequency of Muscle-Strengthening Activities per Week', 'Ever Had at Least 12 Alcoholic Drinks in One Year', 'Current Smoking Frequency', 'Time Spent Watching TV or Videos (minutes/day)', 'Calcium Intake (mg)', 'Alcohol Intake (grams)', 'Sugar Intake (grams)', 'Total Fat Intake (grams)', 'Engaged in Vigorous Activity in Past 30 Days', 'Frequency of Vigorous Physical Activity per Week', 'Smoked at Least 100 Cigarettes in Life']
+)
+health_outcome_of_interest = st.selectbox(
+    "Select Health Outcome",
+    options=health_outcomes,
+    index=health_outcomes.index('Ever Told Had High Blood Pressure')
 )
 
-chart
+# pca on all the lifestyle factors
+X = df_num[lifestyle_factors_of_interest]
+scaler = StandardScaler()
+X = X.dropna()
+X_scaled = scaler.fit_transform(X)
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+df_pca = pd.DataFrame(X_pca, columns=['PC1', 'PC2'])
+df_pca['Health Outcome'] = df[health_outcome_of_interest]
+
+# Brush for selection
+brush = alt.selection_interval()
+
+# if health_outcome_of_interest is continuous, Health Outcome:Q, else Health Outcome:O
+if df[health_outcome_of_interest].dtype == 'object':
+    # Scatter Plot
+    points = alt.Chart(df_pca).mark_circle().encode(
+        x='PC1:Q',
+        y='PC2:Q',
+        color=alt.condition(brush, 'Health Outcome', alt.value('grey')),
+        tooltip=['Health Outcome', 'PC1', 'PC2']
+    ).add_params(
+        brush
+    )
+    # for each category, calculate the percentage of each category in the selected
+    ranked_text = alt.Chart(df_pca).mark_text(align='right').encode(
+            y=alt.Y('row_number:O').axis(None)
+        ).transform_filter(
+            brush
+        )
+    points
+    # calculate percentage for each category, do not use df_pca because brush is applied
+    # categories = df_pca['Health Outcome'].unique()
+    # text_lst = []
+    # for category in categories:
+    #     temp_text = ranked_text.transform_filter(alt.datum['Health Outcome'] == category)
+    #     this_cate_count = temp_text.data.shape[0]
+    #     total = ranked_text.data.shape[0]
+    #     percentage = this_cate_count / total
+    #     text = temp_text.encode(text=alt.value(f'{category}: {percentage:.2%}')).properties(
+    #         title=alt.Title(text=f'{category}', align='right')
+    #     )
+    #     text_lst.append(text)
+    # text = alt.hconcat(*text_lst)        
+    # points & text
+    # ranked_text = alt.Chart(df_pca).mark_text(align='right').encode(
+    #         y=alt.Y('row_number:O').axis(None)
+    #     ).transform_filter(
+    #         brush
+    #     )
+    # # calculate percentage for each category
+    # total = df_pca.shape[0]
+    # unique_values = df_pca['Health Outcome'].unique()
+    # text_lst = []
+    # for category in unique_values:
+    #     percentage = df_pca[df_pca['Health Outcome'] == category].shape[0] / total
+    #     text = ranked_text.encode(text=alt.value(f'{category}: {percentage:.2%}')).properties(
+    #         title=alt.Title(text=f'{category}', align='right')
+    #     )
+    #     text_lst.append(text)
+    # text = alt.hconcat(*text_lst)
+    # points & text
+else:
+    # Scatter Plot
+    points = alt.Chart(df_pca).mark_circle().encode(
+        x='PC1:Q',
+        y='PC2:Q',
+        color=alt.condition(brush, 'Health Outcome:Q', alt.value('grey')),
+        tooltip=['Health Outcome', 'PC1', 'PC2']
+    ).add_params(
+        brush
+    )
+    ranked_text = alt.Chart(df_pca).mark_text(align='right').encode(
+            y=alt.Y('row_number:O').axis(None)
+        ).transform_filter(
+            brush
+        )
+    mean_Health_Outcome = ranked_text.encode(text='mean(Health Outcome)').properties(
+            title=alt.Title(text='Mean Health Outcome', align='right')
+        )
+    median_Health_Outcome = ranked_text.encode(text='median(Health Outcome)').properties(
+            title=alt.Title(text='Median Health Outcome', align='right')
+        )
+    std_Health_Outcome = ranked_text.encode(text='stdev(Health Outcome)').properties(
+            title=alt.Title(text='Standard Deviation Health Outcome', align='right')
+        )
+    text = alt.hconcat(
+            mean_Health_Outcome,
+            median_Health_Outcome,
+            std_Health_Outcome,
+        )
+    points & text
+    
+
+
+# points
+
+
